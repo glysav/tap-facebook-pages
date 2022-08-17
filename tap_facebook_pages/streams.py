@@ -435,7 +435,7 @@ class PostAttachments(FacebookPagesStream):
     name = "post_attachments"
     tap_stream_id = "post_attachments"
     path = "/posts"
-    primary_keys = ["id"]
+    primary_keys = ["post_id"]
     replication_key = "post_created_time"
     replication_method = "INCREMENTAL"
     schema_filepath = SCHEMAS_DIR / "post_attachments.json"
