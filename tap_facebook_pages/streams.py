@@ -475,7 +475,7 @@ class PostAttachments(FacebookPagesStream):
             parent_info = {
                 "page_id": self.page_id,
                 "post_id": row["id"],
-                "post_created_time" = datetime.datetime.strptime(row["created_time"], '%Y-%m-%dT%H:%M:%S%z').strftime('%Y-%m-%dT%H:%M:%S')
+                "post_created_time": datetime.datetime.strptime(row["created_time"], '%Y-%m-%dT%H:%M:%S%z').strftime('%Y-%m-%dT%H:%M:%S')
             }
             if "attachments" in row:
                 for attachment in row["attachments"]["data"]:
