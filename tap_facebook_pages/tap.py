@@ -50,10 +50,6 @@ class TapFacebookPages(Tap):
     def __init__(self, config: Union[PurePath, str, dict, None] = None,
                  catalog: Union[PurePath, str, dict, None] = None, state: Union[PurePath, str, dict, None] = None,
                  parse_env_config: bool = True) -> None:
-        super().__init__(config, catalog, state, parse_env_config)
-        self.logger.info(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
-        print(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
-        _logger.info(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
         self.access_tokens = {}
 
         # update page access tokens on sync
@@ -64,6 +60,11 @@ class TapFacebookPages(Tap):
                 self.get_pages_tokens(page_ids, self.config['access_token'])
             else:
                 self.access_tokens[page_ids[0]] = self.exchange_token(page_ids[0], self.config['access_token'])
+
+        super().__init__(config, catalog, state, parse_env_config)
+        self.logger.info(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
+        print(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
+        _logger.info(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
 
     def exchange_token(self, page_id: str, access_token: str):
         url = BASE_URL.format(page_id=page_id)
