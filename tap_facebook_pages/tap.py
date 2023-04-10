@@ -65,8 +65,6 @@ class TapFacebookPages(Tap):
                 self.access_tokens[page_ids[0]] = self.exchange_token(page_ids[0], self.config['access_token'])
 
         self.logger.info(f"{'#'*30}/nAFTER CONFIG:{self.config}/n{'#'*30}")
-        print(f"{'#'*30}/nAFTER CONFIG:{self.config}/n{'#'*30}")
-        _logger.info(f"{'#'*30}/nAFTER CONFIG:{self.config}/n{'#'*30}")
 
     def exchange_token(self, page_id: str, access_token: str):
         url = BASE_URL.format(page_id=page_id)
@@ -142,8 +140,6 @@ class TapFacebookPages(Tap):
 
     def load_streams(self) -> List[Stream]:
         self.logger.info(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
-        print(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
-        _logger.info(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
         self.after_init()
         stream_objects = self.discover_streams()
         if self.input_catalog:
