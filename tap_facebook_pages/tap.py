@@ -52,6 +52,8 @@ class TapFacebookPages(Tap):
                  parse_env_config: bool = True) -> None:
         super().__init__(config, catalog, state, parse_env_config)
         self.logger.info(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
+        print(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
+        _logger.info(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
         self.access_tokens = {}
 
         # update page access tokens on sync
