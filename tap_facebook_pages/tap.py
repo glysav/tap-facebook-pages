@@ -50,6 +50,9 @@ class TapFacebookPages(Tap):
     def __init__(self, config: Union[PurePath, str, dict, None] = None,
                  catalog: Union[PurePath, str, dict, None] = None, state: Union[PurePath, str, dict, None] = None,
                  parse_env_config: bool = True) -> None:
+        super().__init__(config, catalog, state, parse_env_config)
+        
+    def after_init(self):
         self.access_tokens = {}
 
         # update page access tokens on sync
@@ -61,10 +64,9 @@ class TapFacebookPages(Tap):
             else:
                 self.access_tokens[page_ids[0]] = self.exchange_token(page_ids[0], self.config['access_token'])
 
-        super().__init__(config, catalog, state, parse_env_config)
-        self.logger.info(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
-        print(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
-        _logger.info(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
+        self.logger.info(f"{'#'*30}/nAFTER CONFIG:{self.config}/n{'#'*30}")
+        print(f"{'#'*30}/nAFTER CONFIG:{self.config}/n{'#'*30}")
+        _logger.info(f"{'#'*30}/nAFTER CONFIG:{self.config}/n{'#'*30}")
 
     def exchange_token(self, page_id: str, access_token: str):
         url = BASE_URL.format(page_id=page_id)
@@ -125,7 +127,7 @@ class TapFacebookPages(Tap):
         streams = []
         for stream_class in STREAM_TYPES:
             stream = stream_class(tap=self)
-            # stream.partitions = self.partitions
+            stream.partitions = self.partitions
             stream.access_tokens = self.access_tokens
             streams.append(stream)
 
@@ -133,12 +135,16 @@ class TapFacebookPages(Tap):
             stream = insight_stream["class"](tap=self, name=insight_stream["name"])
             stream.tap_stream_id = insight_stream["name"]
             stream.metrics = insight_stream["metrics"]
-            # stream.partitions = self.partitions
+            stream.partitions = self.partitions
             stream.access_tokens = self.access_tokens
             streams.append(stream)
         return streams
 
     def load_streams(self) -> List[Stream]:
+        self.logger.info(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
+        print(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
+        _logger.info(f"{'#'*30}/nCONFIG:{self.config}/n{'#'*30}")
+        self.after_init()
         stream_objects = self.discover_streams()
         if self.input_catalog:
             selected_streams = []
