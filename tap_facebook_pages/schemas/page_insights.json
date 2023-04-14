@@ -19,7 +19,8 @@
 		"value": {
 			"type": [
 				"null",
-				"integer"
+				"integer",
+				"object"
 			]
 		},
 		"context": {

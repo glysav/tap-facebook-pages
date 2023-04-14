@@ -384,6 +384,8 @@ class Posts(FacebookPagesStream):
         resp_json = response.json()
         for row in resp_json["data"]:
             row["page_id"] = self.page_id
+            row["created_time"] = datetime.datetime.strptime(row["created_time"], '%Y-%m-%dT%H:%M:%S%z').strftime('%Y-%m-%dT%H:%M:%S')
+            row["updated_time"] = datetime.datetime.strptime(row["updated_time"], '%Y-%m-%dT%H:%M:%S%z').strftime('%Y-%m-%dT%H:%M:%S')
             yield row
 
 
@@ -432,7 +434,8 @@ class PostTaggedProfile(FacebookPagesStream):
             parent_info = {
                 "page_id": self.page_id,
                 "post_id": row["id"],
-                "post_created_time": row["created_time"]
+                "post_created_time": datetime.datetime.strptime(row["created_time"], '%Y-%m-%dT%H:%M:%S%z').strftime('%Y-%m-%dT%H:%M:%S')
+
             }
             if "to" in row:
                 for attachment in row["to"]["data"]:
@@ -444,7 +447,7 @@ class PostAttachments(FacebookPagesStream):
     name = "post_attachments"
     tap_stream_id = "post_attachments"
     path = "/posts"
-    primary_keys = ["id"]
+    primary_keys = ["post_id"]
     replication_key = "post_created_time"
     replication_method = "INCREMENTAL"
     schema_filepath = SCHEMAS_DIR / "post_attachments.json"
@@ -482,7 +485,7 @@ class PostAttachments(FacebookPagesStream):
             parent_info = {
                 "page_id": self.page_id,
                 "post_id": row["id"],
-                "post_created_time": row["created_time"]
+                "post_created_time": datetime.datetime.strptime(row["created_time"], '%Y-%m-%dT%H:%M:%S%z').strftime('%Y-%m-%dT%H:%M:%S')
             }
             if "attachments" in row:
                 for attachment in row["attachments"]["data"]:
@@ -607,7 +610,7 @@ class PostInsights(FacebookPagesStream):
                 base_item = {
                     "post_id": row["id"],
                     "page_id": self.page_id,
-                    "post_created_time": row["created_time"],
+                    "post_created_time": datetime.datetime.strptime(row["created_time"], '%Y-%m-%dT%H:%M:%S%z').strftime('%Y-%m-%dT%H:%M:%S'),
                     "name": insights["name"],
                     "period": insights["period"],
                     "title": insights["title"],
