@@ -463,7 +463,7 @@ class PostAttachments(FacebookPagesStream):
     name = "post_attachments"
     tap_stream_id = "post_attachments"
     path = "/posts"
-    primary_keys = ["id"]
+    primary_keys = ["post_id"]
     replication_key = "post_created_time"
     replication_method = "INCREMENTAL"
     schema_filepath = SCHEMAS_DIR / "post_attachments.json"
@@ -572,9 +572,12 @@ class PageInsights(FacebookPagesStream):
                         for key, value in values["value"].items():
                             item = {
                                 "context": key,
-                                "value": value,
                                 "end_time": values["end_time"]
                             }
+                            if isinstance(value, dict):
+                                item["value"] = value['WWW']
+                            else:
+                                item["value"] = value
                             item.update(base_item)
                             yield item
                     else:
