@@ -51,8 +51,6 @@ class TapFacebookPages(Tap):
                  catalog: Union[PurePath, str, dict, None] = None, state: Union[PurePath, str, dict, None] = None,
                  parse_env_config: bool = True) -> None:
         super().__init__(config, catalog, state, parse_env_config)
-        # update page access tokens on sync
-        page_ids = self.config['page_ids']
 
     def exchange_token(self, page_id: str, access_token: str):
         url = BASE_URL.format(page_id=page_id)

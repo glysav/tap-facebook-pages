@@ -38,9 +38,6 @@ def is_status_code_fn(blacklist=None, whitelist=None):
         status_code = getattr(exc, 'code', None)
         if status_code is None:
             return False
-        status_code = getattr(exc, 'code', None)
-        if status_code is None:
-            return False
 
         if blacklist is not None and status_code not in blacklist:
             return True
@@ -294,8 +291,7 @@ class FacebookPagesStream(RESTStream):
     def _request_with_backoff(self, prepared_request) -> requests.Response:
         response = self.requests_session.send(prepared_request)
         if response.status_code in [401, 403]:
-            # self.logger.info("Skipping request to {}".format(prepared_request.url))
-            self.logger.info(
+            self.logger.warning(
                 f"Reason: {response.status_code} - {str(response.content)}"
             )
             raise RuntimeError(
