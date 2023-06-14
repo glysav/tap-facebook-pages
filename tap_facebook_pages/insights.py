@@ -247,11 +247,6 @@ INSIGHT_STREAMS = [
             "page_video_complete_views_30s_click_to_play",
             "page_video_complete_views_30s_unique",
             "page_video_complete_views_30s_repeat_views",
-            "post_video_complete_views_30s_autoplayed",
-            "post_video_complete_views_30s_clicked_to_play",
-            "post_video_complete_views_30s_organic",
-            "post_video_complete_views_30s_paid",
-            "post_video_complete_views_30s_unique",
         ]
     },
     {
@@ -409,6 +404,11 @@ INSIGHT_STREAMS = [
             "post_video_views_10s_organic",
             "post_video_views_10s_paid",
             "post_video_views_10s_sound_on",
+            "post_video_complete_views_30s_autoplayed",
+            "post_video_complete_views_30s_clicked_to_play",
+            "post_video_complete_views_30s_organic",
+            "post_video_complete_views_30s_paid",
+            "post_video_complete_views_30s_unique",
 
         ]
     },
