@@ -107,6 +107,15 @@ def error_handler(fnc):
         jitter=None,
         max_value=60
     )
+    @backoff.on_exception(
+        backoff.expo,
+        FacebookInternalError,
+        on_backoff=retry_handler,
+        max_tries=MAX_RETRY,
+        giveup=is_status_code_fn(blacklist=[500]),
+        jitter=None,
+        max_value=60
+    )
     @functools.wraps(fnc)
     def wrapper(*args, **kwargs):
         return fnc(*args, **kwargs)
@@ -115,6 +124,12 @@ def error_handler(fnc):
 
 
 class TooManyDataRequestedError(Exception):
+    def __init__(self, msg=None, code=None):
+        Exception.__init__(self, msg)
+        self.code = code
+
+
+class FacebookInternalError(Exception):
     def __init__(self, msg=None, code=None):
         Exception.__init__(self, msg)
         self.code = code
@@ -296,6 +311,13 @@ class FacebookPagesStream(RESTStream):
             )
             raise RuntimeError(
                 "Requested resource was unauthorized, forbidden, or not found."
+            )
+        elif response.status_code == 500:
+            raise FacebookInternalError(
+                f"Error making request to API: {prepared_request.url} "
+                f"[{response.status_code} - {str(response.content)}]".replace(
+                    "\\n", "\n"
+                )
             )
         elif response.status_code >= 400:
             # retry by changing 'until' param
