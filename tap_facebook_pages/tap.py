@@ -122,11 +122,12 @@ class TapFacebookPages(Tap):
             stream = stream_class(tap=self)
             stream.partitions = self.partitions
             stream.access_tokens = self.access_tokens
+            stream.tap_stream_id = f"{stream.tap_stream_id}__{page_ids[0]}"
             streams.append(stream)
 
         for insight_stream in INSIGHT_STREAMS:
             stream = insight_stream["class"](tap=self, name=insight_stream["name"])
-            stream.tap_stream_id = insight_stream["name"]
+            stream.tap_stream_id = f"{insight_stream['name']}__{page_ids[0]}"
             stream.metrics = insight_stream["metrics"]
             stream.partitions = self.partitions
             stream.access_tokens = self.access_tokens
